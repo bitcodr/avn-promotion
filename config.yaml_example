@@ -1,0 +1,13 @@
+APP:
+  URL: localhost
+  PORT: 3470
+  DEBUG: FALSE
+
+DATABASES:
+  MYSQL:
+    HOST: 127.0.0.1
+    PORT: 3306
+    DATABASE:
+    USERNAME:
+    PASSWORD:
+
