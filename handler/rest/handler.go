@@ -13,7 +13,7 @@ import (
 )
 
 type PromotionHandler interface {
-	// Get(res http.ResponseWriter, req *http.Request)
+	List(res http.ResponseWriter, req *http.Request)
 	Insert(res http.ResponseWriter, req *http.Request)
 }
 
@@ -58,22 +58,13 @@ func (w *promotionHandler) Insert(res http.ResponseWriter, req *http.Request) {
 	helper.ResponseOk(res, http.StatusOK, contentTypeHeader, promotion)
 }
 
-// func (w *promotionHandler) Get(res http.ResponseWriter, req *http.Request) {
-// 	// acceptHeader := req.Header.Get("Accept")
-// 	// params := mux.Vars(req)
-// 	// if params == nil {
-// 	// 	helper.ResponseError(res, nil, http.StatusUnprocessableEntity, acceptHeader, "W-1000", config.LangConfig.GetString("MESSAGES.PARAM_EMPTY"))
-// 	// 	return
-// 	// }
-// 	// cellphone, err := strconv.ParseUint(params["cellphone"], 10, 64)
-// 	// if err != nil {
-// 	// 	helper.ResponseError(res, err, http.StatusInternalServerError, acceptHeader, "W-1001", config.LangConfig.GetString("MESSAGES.PARSE_CELLPHONE"))
-// 	// 	return
-// 	// }
-// 	// promotion, err := w.promotionService.Get(cellphone)
-// 	// if err != nil {
-// 	// 	helper.ResponseError(res, err, http.StatusNotFound, acceptHeader, "W-1002", config.LangConfig.GetString("MESSAGES.DATA_NOT_FOUND"))
-// 	// 	return
-// 	// }
-// 	// helper.ResponseOk(res, http.StatusOK, acceptHeader, promotion)
-// }
+func (w *promotionHandler) List(res http.ResponseWriter, req *http.Request) {
+	acceptHeader := req.Header.Get("Accept")
+	promotions, err := w.promotionService.List()
+	if err != nil {
+		helper.ResponseError(res, err, http.StatusNotFound, acceptHeader, "P-1004", config.LangConfig.GetString("MESSAGES.DATA_NOT_FOUND"))
+		return
+	}
+	helper.ResponseOk(res, http.StatusOK, acceptHeader, promotions)
+}
+

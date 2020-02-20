@@ -46,3 +46,23 @@ func (w *promotionRepo) Insert(promotion *model.Promotion) (*model.Promotion, er
 	promotion.ID = document.InsertedID.(primitive.ObjectID)
 	return promotion, nil
 }
+
+func (w *promotionRepo) List() ([]*model.Promotion, error) {
+	db := w.app.DB()
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	cursor, err := db.Collection(PROMOTION_COLLECTION).Find(ctx, primitive.M{})
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+	var promotions []*model.Promotion
+	for cursor.Next(ctx) {
+		promotion := new(model.Promotion)
+		if err := cursor.Decode(&promotion); err != nil {
+			return nil, err
+		}
+		promotions = append(promotions, promotion)
+	}
+	return promotions, nil
+}

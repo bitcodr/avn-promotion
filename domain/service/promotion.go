@@ -13,12 +13,12 @@ var (
 )
 
 type PromotionService interface {
-	// Get(cellphone uint64) (*model.Promotion, error)
+	List() ([]*model.Promotion, error)
 	Insert(promotion *model.Promotion) (*model.Promotion, error)
 }
 
 type PromotionRepository interface {
-	// Get(cellphone uint64) (*model.Promotion, error)
+	List() ([]*model.Promotion, error)
 	Insert(promotion *model.Promotion) (*model.Promotion, error)
 	GetByPromotionCode(promotionCode string) (*model.Promotion, error)
 }
@@ -38,16 +38,16 @@ func NewPromotionService(promotionRepo PromotionRepository) PromotionService {
 	}
 }
 
-// func (w *promotionService) Get(cellphone uint64) (*model.Promotion, error) {
-// 	return w.promotionRepo.Get(cellphone)
-// }
+func (p *promotionService) List() ([]*model.Promotion, error) {
+	return p.promotionRepo.List()
+}
 
-func (w *promotionService) Insert(promotion *model.Promotion) (*model.Promotion, error) {
+func (p *promotionService) Insert(promotion *model.Promotion) (*model.Promotion, error) {
 	if err := helper.ValidateModel(promotion); err != nil {
 		return nil, err
 	}
-	if _, err := w.promotionRepo.GetByPromotionCode(promotion.PromotionCode); err == nil {
+	if _, err := p.promotionRepo.GetByPromotionCode(promotion.PromotionCode); err == nil {
 		return nil, errors.New("service.insert.dupplicate.promotion")
 	}
-	return w.promotionRepo.Insert(promotion)
+	return p.promotionRepo.Insert(promotion)
 }

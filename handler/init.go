@@ -12,8 +12,9 @@ import (
 )
 
 const (
-	REST_GET_PROMOTION          = "REST_GET_PROMOTION"
-	REST_INSERT_PROMOTION       = "REST_INSERT_PROMOTION"
+	REST_GET_PROMOTION_RECEIVERS = "REST_GET_PROMOTION_RECEIVERS"
+	REST_INSERT_PROMOTION        = "REST_INSERT_PROMOTION"
+	REST_LIST_PROMOTIONS = "LIST_OF_PROMOTIONS"
 )
 
 func choosePromotionRepo(connection string, app *config.App) service.PromotionRepository {
@@ -33,8 +34,9 @@ func HTTP(app *config.App, router *mux.Router) {
 
 	promotionRestHandler := rest.NewRestPromotionHandler(promotionService)
 
-	// router.HandleFunc("/promotion/{cellphone}", promotionRestHandler.Get).Methods(http.MethodGet).Name(REST_GET_PROMOTION)
-	router.HandleFunc("/promotion", promotionRestHandler.Insert).Methods(http.MethodPost).Name(REST_INSERT_PROMOTION)
+	// router.HandleFunc("/promotions/{promotionCode}/receivers", promotionRestHandler.receivers).Methods(http.MethodGet).Name(REST_GET_PROMOTION_RECEIVERS)
+	router.HandleFunc("/promotions", promotionRestHandler.Insert).Methods(http.MethodPost).Name(REST_INSERT_PROMOTION)
+	router.HandleFunc("/promotions", promotionRestHandler.List).Methods(http.MethodGet).Name(REST_LIST_PROMOTIONS)
 
 }
 
