@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-type Receivers struct {
+type Receiver struct {
 	ID        primitive.ObjectID `json:"id" bson:"_id" msgpack:"id"`
 	Fullname  string             `json:"fullname" bson:"fullname" msgpack:"fullname" validate:"required"`
 	Cellphone uint64             `json:"cellphone" bson:"cellphone" msgpack:"cellphone" validate:"required"`

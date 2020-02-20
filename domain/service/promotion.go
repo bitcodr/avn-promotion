@@ -15,12 +15,14 @@ var (
 type PromotionService interface {
 	List() ([]*model.Promotion, error)
 	Insert(promotion *model.Promotion) (*model.Promotion, error)
+	Receivers(promotionCode string) ([]*model.Receiver, error)
 }
 
 type PromotionRepository interface {
 	List() ([]*model.Promotion, error)
 	Insert(promotion *model.Promotion) (*model.Promotion, error)
 	GetByPromotionCode(promotionCode string) (*model.Promotion, error)
+	Receivers(promotionCode string) ([]*model.Receiver, error)
 }
 
 type PromotionSerializer interface {
@@ -50,4 +52,8 @@ func (p *promotionService) Insert(promotion *model.Promotion) (*model.Promotion,
 		return nil, errors.New("service.insert.dupplicate.promotion")
 	}
 	return p.promotionRepo.Insert(promotion)
+}
+
+func (p *promotionService) Receivers(promotionCode string) ([]*model.Receiver, error) {
+	return p.promotionRepo.Receivers(promotionCode)
 }

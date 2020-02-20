@@ -10,11 +10,13 @@ import (
 	"github.com/amiraliio/avn-promotion/helper"
 	"github.com/amiraliio/avn-promotion/serializer/json"
 	"github.com/amiraliio/avn-promotion/serializer/msgpack"
+	"github.com/gorilla/mux"
 )
 
 type PromotionHandler interface {
 	List(res http.ResponseWriter, req *http.Request)
 	Insert(res http.ResponseWriter, req *http.Request)
+	Receivers(res http.ResponseWriter, req *http.Request)
 }
 
 type promotionHandler struct {
@@ -68,3 +70,17 @@ func (w *promotionHandler) List(res http.ResponseWriter, req *http.Request) {
 	helper.ResponseOk(res, http.StatusOK, acceptHeader, promotions)
 }
 
+func (w *promotionHandler) Receivers(res http.ResponseWriter, req *http.Request) {
+	acceptHeader := req.Header.Get("Accept")
+	params := mux.Vars(req)
+	if params == nil {
+		helper.ResponseError(res, nil, http.StatusUnprocessableEntity, acceptHeader, "P-1005", config.LangConfig.GetString("MESSAGES.PARAM_EMPTY"))
+		return
+	}
+	promotion, err := w.promotionService.Receivers(params["promotionCode"])
+	if err != nil {
+		helper.ResponseError(res, err, http.StatusNotFound, acceptHeader, "P-1007", config.LangConfig.GetString("MESSAGES.DATA_NOT_FOUND"))
+		return
+	}
+	helper.ResponseOk(res, http.StatusOK, acceptHeader, promotion)
+}

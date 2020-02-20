@@ -12,6 +12,7 @@ import (
 )
 
 const PROMOTION_COLLECTION = "promotion"
+const RECEIVERS_COLLECTION = "receivers"
 
 type promotionRepo struct {
 	app *config.App
@@ -65,4 +66,24 @@ func (w *promotionRepo) List() ([]*model.Promotion, error) {
 		promotions = append(promotions, promotion)
 	}
 	return promotions, nil
+}
+
+func (w *promotionRepo) Receivers(promotionCode string) ([]*model.Receiver, error) {
+	db := w.app.DB()
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	cursor, err := db.Collection(RECEIVERS_COLLECTION).Find(ctx, primitive.M{"promotionCode": promotionCode})
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+	var receivers []*model.Receiver
+	for cursor.Next(ctx) {
+		receiver := new(model.Receiver)
+		if err := cursor.Decode(&receiver); err != nil {
+			return nil, err
+		}
+		receivers = append(receivers, receiver)
+	}
+	return receivers, nil
 }
