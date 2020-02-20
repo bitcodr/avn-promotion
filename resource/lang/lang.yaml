@@ -2,4 +2,5 @@ MESSAGES:
   PARAM_EMPTY: "params are empty"
   PARSE_CELLPHONE: "cannot parse cellphone"
   DATA_NOT_FOUND: "data not found"
-  PROMOTION_CODE_IS_REQUIRED: "promotion code is required"
+  BODY_ERROR: "body error"
+  SERIALIZER_ERROR: "serializer error"

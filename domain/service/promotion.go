@@ -7,19 +7,20 @@ import (
 	"github.com/amiraliio/avn-promotion/helper"
 )
 
-var ( 
+var (
 	ErrPromotionNotFound = errors.New("Promotion Not Found")
 	ErrPromotionInvalid  = errors.New("Promotion Invalid")
 )
 
 type PromotionService interface {
-	Get(cellphone uint64) (*model.Promotion, error)
+	// Get(cellphone uint64) (*model.Promotion, error)
 	Insert(promotion *model.Promotion) (*model.Promotion, error)
 }
 
 type PromotionRepository interface {
-	Get(cellphone uint64) (*model.Promotion, error)
+	// Get(cellphone uint64) (*model.Promotion, error)
 	Insert(promotion *model.Promotion) (*model.Promotion, error)
+	GetByPromotionCode(promotionCode string) (*model.Promotion, error)
 }
 
 type PromotionSerializer interface {
@@ -37,14 +38,16 @@ func NewPromotionService(promotionRepo PromotionRepository) PromotionService {
 	}
 }
 
-func (w *promotionService) Get(cellphone uint64) (*model.Promotion, error) {
-	return w.promotionRepo.Get(cellphone)
-}
+// func (w *promotionService) Get(cellphone uint64) (*model.Promotion, error) {
+// 	return w.promotionRepo.Get(cellphone)
+// }
 
 func (w *promotionService) Insert(promotion *model.Promotion) (*model.Promotion, error) {
 	if err := helper.ValidateModel(promotion); err != nil {
 		return nil, err
 	}
+	if _, err := w.promotionRepo.GetByPromotionCode(promotion.PromotionCode); err == nil {
+		return nil, errors.New("service.insert.dupplicate.promotion")
+	}
 	return w.promotionRepo.Insert(promotion)
 }
-

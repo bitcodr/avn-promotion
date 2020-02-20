@@ -1,12 +1,12 @@
 APP:
   URL: localhost
-  PORT: 3470
+  PORT: 3471
   DEBUG: FALSE
 
 DATABASES:
-  MYSQL:
+  MONGO:
     HOST: 127.0.0.1
-    PORT: 3306
+    PORT: 27017
     DATABASE:
     USERNAME:
     PASSWORD:
