@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/amiraliio/avn-promotion/config"
-	"github.com/amiraliio/avn-promotion/domain/model/proto"
+	"github.com/amiraliio/avn-grpc-promotion-proto/proto"
 	"github.com/amiraliio/avn-promotion/domain/service"
 	grpcHandler "github.com/amiraliio/avn-promotion/handler/grpc"
 	restHandler "github.com/amiraliio/avn-promotion/handler/rest"

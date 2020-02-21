@@ -3,7 +3,7 @@ package grpc
 import (
 	"context"
 
-	"github.com/amiraliio/avn-promotion/domain/model/proto"
+	"github.com/amiraliio/avn-grpc-promotion-proto/proto"
 	"github.com/amiraliio/avn-promotion/domain/service"
 )
 

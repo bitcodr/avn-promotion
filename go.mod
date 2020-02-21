@@ -3,8 +3,8 @@ module github.com/amiraliio/avn-promotion
 go 1.13
 
 require (
+	github.com/amiraliio/avn-grpc-promotion-proto v1.0.0
 	github.com/go-playground/validator/v10 v10.2.0
-	github.com/golang/protobuf v1.3.3
 	github.com/gorilla/mux v1.7.4
 	github.com/klauspost/compress v1.10.1 // indirect
 	github.com/pelletier/go-toml v1.6.0 // indirect
