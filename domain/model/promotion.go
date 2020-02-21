@@ -11,7 +11,7 @@ type Promotion struct {
 	PromotionCode string             `json:"promotionCode" bson:"promotionCode" msgpack:"promotionCode" validate:"required"`
 	UsableTimes   uint32             `json:"usableTimes" bson:"usableTimes" msgpack:"usableTimes" validate:"required"`
 	ExpireDate    uint64             `json:"expireDate" bson:"expireDate" msgpack:"expireDate" validate:"required"`
-	Charge        uint64             `json:"charge" bson:"charge" msgpack:"charge" validate:"required"`
+	Charge        float64            `json:"charge" bson:"charge" msgpack:"charge" validate:"required"`
 	CreatedAt     time.Time          `json:"createdAt" bson:"createdAt" msgpack:"createdAt"`
 	UpdatedAt     time.Time          `json:"updatedAt" bson:"updatedAt" msgpack:"updatedAt"`
 }
