@@ -19,14 +19,14 @@ func Init() {
 	app := new(config.App)
 	app.Init()
 
-	err := make(chan error, 3)
+	err := make(chan error, 4)
 
 	go func() {
-		httpListener(app, err)
+		grpcListener(app)
 	}()
 
 	go func() {
-		grpcListener(app, err)
+		httpListener(app, err)
 	}()
 
 	go func() {
@@ -50,9 +50,8 @@ func httpListener(app *config.App, err chan<- error) {
 	err <- http.ListenAndServe(":"+config.AppConfig.GetString("APP.HTTP_PORT"), router)
 }
 
-func grpcListener(app *config.App, err chan<- error) {
-	listener, er := net.Listen("tcp", ":"+config.AppConfig.GetString("APP.TCP_PORT"))
-	err <- er
+func grpcListener(app *config.App) {
+	listener, _ := net.Listen("tcp", ":"+config.AppConfig.GetString("APP.TCP_PORT"))
 
 	server := grpc.NewServer()
 
@@ -62,5 +61,5 @@ func grpcListener(app *config.App, err chan<- error) {
 
 	fmt.Println("Listening TCP on port " + config.AppConfig.GetString("APP.TCP_PORT"))
 
-	err <- server.Serve(listener)
+	_= server.Serve(listener)
 }
