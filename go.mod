@@ -4,7 +4,7 @@ go 1.13
 
 require (
 	github.com/go-playground/validator/v10 v10.2.0
-	github.com/google/uuid v1.1.1
+	github.com/golang/protobuf v1.3.3
 	github.com/gorilla/mux v1.7.4
 	github.com/klauspost/compress v1.10.1 // indirect
 	github.com/pelletier/go-toml v1.6.0 // indirect
@@ -16,10 +16,11 @@ require (
 	github.com/spf13/viper v1.6.2
 	github.com/vmihailenco/msgpack/v4 v4.3.7
 	go.mongodb.org/mongo-driver v1.3.0
-	golang.org/x/crypto v0.0.0-20200219234226-1ad67e1f0ef4 // indirect
+	golang.org/x/crypto v0.0.0-20200220183623-bac4c82f6975 // indirect
 	golang.org/x/net v0.0.0-20200219183655-46282727080f // indirect
 	golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e // indirect
 	golang.org/x/sys v0.0.0-20200219091948-cb0a6d8edb6c // indirect
+	google.golang.org/grpc v1.27.1
 	gopkg.in/ini.v1 v1.52.0 // indirect
 	gopkg.in/yaml.v2 v2.2.8 // indirect
 )

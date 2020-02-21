@@ -16,6 +16,7 @@ type PromotionService interface {
 	List() ([]*model.Promotion, error)
 	Insert(promotion *model.Promotion) (*model.Promotion, error)
 	Receivers(promotionCode string) ([]*model.Receiver, error)
+	Verify(promotionCode string) (*model.Promotion, error)
 }
 
 type PromotionRepository interface {
@@ -23,6 +24,7 @@ type PromotionRepository interface {
 	Insert(promotion *model.Promotion) (*model.Promotion, error)
 	GetByPromotionCode(promotionCode string) (*model.Promotion, error)
 	Receivers(promotionCode string) ([]*model.Receiver, error)
+	Verify(promotionCode string) (*model.Promotion, error)
 }
 
 type PromotionSerializer interface {
@@ -56,4 +58,12 @@ func (p *promotionService) Insert(promotion *model.Promotion) (*model.Promotion,
 
 func (p *promotionService) Receivers(promotionCode string) ([]*model.Receiver, error) {
 	return p.promotionRepo.Receivers(promotionCode)
+}
+
+func (p *promotionService) Verify(promotionCode string) (*model.Promotion, error) {
+	//check the promotionCode is valid
+	//check how many times used
+	//check in broker 
+	//check
+	return p.promotionRepo.Verify(promotionCode)
 }

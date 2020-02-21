@@ -5,10 +5,13 @@ import (
 	"net/http"
 
 	"github.com/amiraliio/avn-promotion/config"
+	"github.com/amiraliio/avn-promotion/domain/model/proto"
 	"github.com/amiraliio/avn-promotion/domain/service"
-	"github.com/amiraliio/avn-promotion/handler/rest"
+	grpcHandler "github.com/amiraliio/avn-promotion/handler/grpc"
+	restHandler "github.com/amiraliio/avn-promotion/handler/rest"
 	"github.com/amiraliio/avn-promotion/repository/mongo"
 	"github.com/gorilla/mux"
+	"google.golang.org/grpc"
 )
 
 const (
@@ -32,14 +35,20 @@ func HTTP(app *config.App, router *mux.Router) {
 
 	promotionService := service.NewPromotionService(promotionRepo)
 
-	promotionRestHandler := rest.NewRestPromotionHandler(promotionService)
+	promotionRestHandler := restHandler.NewRestPromotionHandler(promotionService)
 
 	router.HandleFunc("/promotions/{promotionCode}/receivers", promotionRestHandler.Receivers).Methods(http.MethodGet).Name(REST_GET_PROMOTION_RECEIVERS)
 	router.HandleFunc("/promotions", promotionRestHandler.Insert).Methods(http.MethodPost).Name(REST_INSERT_PROMOTION)
 	router.HandleFunc("/promotions", promotionRestHandler.List).Methods(http.MethodGet).Name(REST_LIST_PROMOTIONS)
-
 }
 
-func GRPC(app *config.App) {
-	//implement grpc handler route here
+func GRPC(app *config.App, server *grpc.Server) {
+
+	promotionRepo := choosePromotionRepo("mongo", app)
+
+	promotionService := service.NewPromotionService(promotionRepo)
+
+	promotionRestHandler := grpcHandler.NewGRPCPromotionHandler(promotionService)
+
+	proto.RegisterPromotionServer(server, promotionRestHandler)
 }

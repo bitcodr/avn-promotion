@@ -87,3 +87,7 @@ func (w *promotionRepo) Receivers(promotionCode string) ([]*model.Receiver, erro
 	}
 	return receivers, nil
 }
+
+func (p *promotionRepo) Verify(promotionCode string) (*model.Promotion, error) {
+	return nil, nil
+}

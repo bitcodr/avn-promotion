@@ -19,17 +19,17 @@ type PromotionHandler interface {
 	Receivers(res http.ResponseWriter, req *http.Request)
 }
 
-type promotionHandler struct {
+type promotionRestHandler struct {
 	promotionService service.PromotionService
 }
 
 func NewRestPromotionHandler(promotionService service.PromotionService) PromotionHandler {
-	return &promotionHandler{
+	return &promotionRestHandler{
 		promotionService,
 	}
 }
 
-func (w *promotionHandler) serializer(contentType string) service.PromotionSerializer {
+func (w *promotionRestHandler) serializer(contentType string) service.PromotionSerializer {
 	switch contentType {
 	case "application/json":
 		return &json.Promotion{}
@@ -40,7 +40,7 @@ func (w *promotionHandler) serializer(contentType string) service.PromotionSeria
 	}
 }
 
-func (w *promotionHandler) Insert(res http.ResponseWriter, req *http.Request) {
+func (w *promotionRestHandler) Insert(res http.ResponseWriter, req *http.Request) {
 	contentTypeHeader := req.Header.Get("Content-Type")
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {
@@ -60,7 +60,7 @@ func (w *promotionHandler) Insert(res http.ResponseWriter, req *http.Request) {
 	helper.ResponseOk(res, http.StatusOK, contentTypeHeader, promotion)
 }
 
-func (w *promotionHandler) List(res http.ResponseWriter, req *http.Request) {
+func (w *promotionRestHandler) List(res http.ResponseWriter, req *http.Request) {
 	acceptHeader := req.Header.Get("Accept")
 	promotions, err := w.promotionService.List()
 	if err != nil {
@@ -70,7 +70,7 @@ func (w *promotionHandler) List(res http.ResponseWriter, req *http.Request) {
 	helper.ResponseOk(res, http.StatusOK, acceptHeader, promotions)
 }
 
-func (w *promotionHandler) Receivers(res http.ResponseWriter, req *http.Request) {
+func (w *promotionRestHandler) Receivers(res http.ResponseWriter, req *http.Request) {
 	acceptHeader := req.Header.Get("Accept")
 	params := mux.Vars(req)
 	if params == nil {

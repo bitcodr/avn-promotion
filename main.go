@@ -17,7 +17,5 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	provider.HTTP()
-
-	provider.GRPC()
+	provider.Init()
 }

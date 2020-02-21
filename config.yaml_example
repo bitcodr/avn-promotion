@@ -1,6 +1,7 @@
 APP:
   URL: localhost
-  PORT: 3471
+  HTTP_PORT: 3471
+  TCP_PORT: 3571
   DEBUG: FALSE
 
 DATABASES:
