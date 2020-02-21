@@ -61,5 +61,5 @@ func grpcListener(app *config.App) {
 
 	fmt.Println("Listening TCP on port " + config.AppConfig.GetString("APP.TCP_PORT"))
 
-	_= server.Serve(listener)
+	_ = server.Serve(listener)
 }
