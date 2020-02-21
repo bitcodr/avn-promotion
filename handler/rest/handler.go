@@ -47,6 +47,7 @@ func (w *promotionRestHandler) Insert(res http.ResponseWriter, req *http.Request
 		helper.ResponseError(res, err, http.StatusNotFound, contentTypeHeader, "P-1001", config.LangConfig.GetString("MESSAGES.BODY_ERROR"))
 		return
 	}
+	defer req.Body.Close()
 	promotionModel, err := w.serializer(contentTypeHeader).Decode(body)
 	if err != nil {
 		helper.ResponseError(res, err, http.StatusNotFound, contentTypeHeader, "P-1002", config.LangConfig.GetString("MESSAGES.SERIALIZER_ERROR"))
