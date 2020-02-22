@@ -2,6 +2,7 @@ package provider
 
 import (
 	"fmt"
+	"log"
 	"net"
 	"net/http"
 	"os"
@@ -19,10 +20,10 @@ func Init() {
 	app := new(config.App)
 	app.Init()
 
-	err := make(chan error, 4)
+	err := make(chan error, 3)
 
 	go func() {
-		grpcListener(app)
+		grpcListener(app, err)
 	}()
 
 	go func() {
@@ -50,9 +51,11 @@ func httpListener(app *config.App, err chan<- error) {
 	err <- http.ListenAndServe(":"+config.AppConfig.GetString("APP.HTTP_PORT"), router)
 }
 
-func grpcListener(app *config.App) {
-	listener, _ := net.Listen("tcp", ":"+config.AppConfig.GetString("APP.TCP_PORT"))
-
+func grpcListener(app *config.App, err chan<- error) {
+	listener, er := net.Listen("tcp", ":"+config.AppConfig.GetString("APP.TCP_PORT"))
+	if er != nil {
+		log.Fatal(er)
+	}
 	server := grpc.NewServer()
 
 	handler.GRPC(app, server)
@@ -61,5 +64,5 @@ func grpcListener(app *config.App) {
 
 	fmt.Println("Listening TCP on port " + config.AppConfig.GetString("APP.TCP_PORT"))
 
-	_ = server.Serve(listener)
+	err <- server.Serve(listener)
 }

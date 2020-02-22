@@ -24,7 +24,6 @@ type PromotionRepository interface {
 	Insert(promotion *model.Promotion) (*model.Promotion, error)
 	GetByPromotionCode(promotionCode string) (*model.Promotion, error)
 	Receivers(promotionCode string) ([]*model.Receiver, error)
-	Verify(promotionCode string) (*model.Promotion, error)
 }
 
 type PromotionSerializer interface {
@@ -61,9 +60,12 @@ func (p *promotionService) Receivers(promotionCode string) ([]*model.Receiver, e
 }
 
 func (p *promotionService) Verify(promotionCode string) (*model.Promotion, error) {
-	//check the promotionCode is valid
+	promotion, err := p.promotionRepo.GetByPromotionCode(promotionCode)
+	if err != nil {
+		return nil, errors.New("service.verify.promotion.notExist")
+	}
 	//check how many times used
-	//check in broker 
-	//check
-	return p.promotionRepo.Verify(promotionCode)
+	//check promotion expire time
+	//check in broker
+	return promotion, nil
 }
