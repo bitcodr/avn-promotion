@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"time"
 
 	"github.com/amiraliio/avn-promotion/domain/model"
 	"github.com/amiraliio/avn-promotion/helper"
@@ -64,8 +65,10 @@ func (p *promotionService) Verify(promotionCode string) (*model.Promotion, error
 	if err != nil {
 		return nil, errors.New("service.verify.promotion.notExist")
 	}
+	if promotion.ExpireDate < uint64(time.Now().Unix()) {
+		return nil, errors.New("service.verify.promotion.expireTime")
+	}
 	//check how many times used
-	//check promotion expire time
 	//check in broker
 	return promotion, nil
 }
