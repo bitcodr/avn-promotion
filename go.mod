@@ -7,6 +7,8 @@ require (
 	github.com/go-playground/validator/v10 v10.2.0
 	github.com/gorilla/mux v1.7.4
 	github.com/klauspost/compress v1.10.1 // indirect
+	github.com/nats-io/nats-server/v2 v2.1.4 // indirect
+	github.com/nats-io/nats.go v1.9.1
 	github.com/pelletier/go-toml v1.6.0 // indirect
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/afero v1.2.2 // indirect
