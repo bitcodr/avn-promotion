@@ -3,6 +3,7 @@ package mongo
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/amiraliio/avn-promotion/config"
@@ -86,4 +87,29 @@ func (w *promotionRepo) Receivers(promotionCode string) ([]*model.Receiver, erro
 		receivers = append(receivers, receiver)
 	}
 	return receivers, nil
+}
+
+func (w *promotionRepo) PromotionReceiversCount(usableTimes uint32, promotionCode string) error {
+	db := w.app.DB()
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	count, err := db.Collection(RECEIVERS_COLLECTION).CountDocuments(ctx, primitive.M{"promotion.promotionCode": promotionCode})
+	if err != nil || uint32(count) == usableTimes {
+		return errors.New("repository.PromotionReceiversCount")
+	}
+	return nil
+}
+
+func (w *promotionRepo) InsertReceiver(receiver *model.Receiver) (*model.Receiver, error) {
+	db := w.app.DB()
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	receiver.CreatedAt = w.app.CurrentTime
+	receiver.ID = primitive.NewObjectID()
+	document, err := db.Collection(RECEIVERS_COLLECTION).InsertOne(ctx, receiver)
+	if err != nil {
+		return nil, err
+	}
+	receiver.ID = document.InsertedID.(primitive.ObjectID)
+	return receiver, nil
 }

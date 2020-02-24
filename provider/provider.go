@@ -13,7 +13,6 @@ import (
 	"github.com/amiraliio/avn-promotion/config"
 	"github.com/amiraliio/avn-promotion/handler"
 	"github.com/gorilla/mux"
-	nats "github.com/nats-io/nats.go"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -32,7 +31,7 @@ func Init() {
 		httpListener(app, err)
 	}()
 
-	natsListener()
+	natsListener(app)
 
 	go func() {
 		c := make(chan os.Signal, 1)
@@ -71,19 +70,15 @@ func grpcListener(app *config.App, err chan<- error) {
 	err <- server.Serve(listener)
 }
 
-func natsListener() {
-	fmt.Println("Listening NATS...")
+func natsListener(app *config.App) {
 	c, er := config.NATSClient()
 	if er != nil {
 		log.Fatal(er)
 	}
-	c.Subscribe("promotion.*", func(m *nats.Msg) {
-		fmt.Println("gb")
-		fmt.Println(string(m.Data))
-		fmt.Println(m.Reply)
-		fmt.Println(m.Sub)
-		fmt.Println(m.Subject)
-		c.Publish(m.Reply, "I can help!")
-	})
+
+	fmt.Println("Listening NATS...")
+
+	handler.NATS(app, c)
+
 	runtime.Goexit()
 }

@@ -14,10 +14,12 @@ var (
 )
 
 type PromotionService interface {
+	GetByPromotionCode(promotionCode string) (*model.Promotion, error)
 	List() ([]*model.Promotion, error)
 	Insert(promotion *model.Promotion) (*model.Promotion, error)
 	Receivers(promotionCode string) ([]*model.Receiver, error)
 	Verify(promotionCode string) (*model.Promotion, error)
+	InsertReceiver(receiver *model.Receiver) (*model.Receiver, error)
 }
 
 type PromotionRepository interface {
@@ -25,6 +27,8 @@ type PromotionRepository interface {
 	Insert(promotion *model.Promotion) (*model.Promotion, error)
 	GetByPromotionCode(promotionCode string) (*model.Promotion, error)
 	Receivers(promotionCode string) ([]*model.Receiver, error)
+	PromotionReceiversCount(usableTimes uint32, promotionCode string) error
+	InsertReceiver(receiver *model.Receiver) (*model.Receiver, error)
 }
 
 type PromotionSerializer interface {
@@ -68,7 +72,20 @@ func (p *promotionService) Verify(promotionCode string) (*model.Promotion, error
 	if promotion.ExpireDate < uint64(time.Now().Unix()) {
 		return nil, errors.New("service.verify.promotion.expireTime")
 	}
-	//check how many times used
-	//check in broker
+	if err := p.promotionRepo.PromotionReceiversCount(promotion.UsableTimes, promotionCode); err != nil {
+		return nil, errors.New("service.verify.promotion.receivers")
+	}
 	return promotion, nil
+}
+
+func (p *promotionService) GetByPromotionCode(promotionCode string) (*model.Promotion, error) {
+	return p.promotionRepo.GetByPromotionCode(promotionCode)
+}
+
+
+func (p *promotionService) InsertReceiver(receiver *model.Receiver) (*model.Receiver, error){
+	if err := helper.ValidateModel(receiver); err != nil {
+		return nil, err
+	}
+	return p.promotionRepo.InsertReceiver(receiver)
 }

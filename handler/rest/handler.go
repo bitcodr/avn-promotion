@@ -38,7 +38,7 @@ func (w *promotionRestHandler) serializer(contentType string) service.PromotionS
 	default:
 		return &json.Promotion{}
 	}
-}
+} 
 
 func (w *promotionRestHandler) Insert(res http.ResponseWriter, req *http.Request) {
 	contentTypeHeader := req.Header.Get("Content-Type")

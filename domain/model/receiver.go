@@ -11,4 +11,5 @@ type Receiver struct {
 	Cellphone uint64             `json:"cellphone" bson:"cellphone" msgpack:"cellphone" validate:"required"`
 	CreatedAt time.Time          `json:"createdAt" bson:"createdAt" msgpack:"createdAt"`
 	UpdatedAt time.Time          `json:"updatedAt" bson:"updatedAt" msgpack:"updatedAt"`
+	Promotion Promotion          `json:"promotion" bson:"promotion" msgpack:"promotion"`
 }

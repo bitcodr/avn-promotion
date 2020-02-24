@@ -28,5 +28,7 @@ func (p *promotionGRPCHandler) Verify(ctx context.Context, req *proto.Request) (
 	}
 	response := new(proto.Response)
 	response.Charge = promotion.Charge
+	response.UsableTimes = promotion.UsableTimes
+	response.ExpireDate = promotion.ExpireDate
 	return response, nil
 }
