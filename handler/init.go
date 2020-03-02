@@ -3,7 +3,6 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -60,34 +59,31 @@ func GRPC(app *config.App, server *grpc.Server) {
 
 func NATS(app *config.App, c *nats.EncodedConn) {
 
-	sub, err := c.Subscribe("promotion.*", func(m *nats.Msg) {
+	c.Subscribe("promotion.*", func(m *nats.Msg) {
 		request := new(model.ChargeRequest)
 		if err := json.Unmarshal(m.Data, request); err != nil {
 			log.Println(err)
-			goto END
+			return
 		}
 		promotionRepo := choosePromotionRepo("mongo", app)
 		promotionService := service.NewPromotionService(promotionRepo)
 		promotion, err := promotionService.GetByPromotionCode(request.PromotionCode)
 		if err != nil {
 			log.Println(err)
-			goto END
+			return
 		}
-		if err := m.Sub.AutoUnsubscribe(promotion.UsableTimes); err != nil {
+		if err := m.Sub.AutoUnsubscribe(int(promotion.UsableTimes)); err != nil {
 			log.Println(err)
-			goto END
+			return
 		}
 		receiver := new(model.Receiver)
 		receiver.Promotion = promotion
 		receiver.Cellphone = request.Cellphone
 		receiver.Fullname = request.Fullname
-		_, err := promotionService.InsertReceiver(receiver)
+		_, err = promotionService.InsertReceiver(receiver)
 		if err != nil {
 			log.Println(err)
-			goto END
+			return
 		}
 	})
-
-END:
-	return
 }
