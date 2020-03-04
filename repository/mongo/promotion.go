@@ -73,7 +73,7 @@ func (w *promotionRepo) Receivers(promotionCode string) ([]*model.Receiver, erro
 	db := w.app.DB()
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
-	cursor, err := db.Collection(RECEIVERS_COLLECTION).Find(ctx, primitive.M{"promotionCode": promotionCode})
+	cursor, err := db.Collection(RECEIVERS_COLLECTION).Find(ctx, primitive.M{"promotion.promotionCode": promotionCode})
 	if err != nil {
 		return nil, err
 	}
