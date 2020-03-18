@@ -12,4 +12,6 @@ type Receiver struct {
 	CreatedAt time.Time          `json:"createdAt" bson:"createdAt" msgpack:"createdAt"`
 	UpdatedAt time.Time          `json:"updatedAt" bson:"updatedAt" msgpack:"updatedAt"`
 	Promotion *Promotion         `json:"promotion" bson:"promotion" msgpack:"promotion"`
+	_         struct{}           //to prevent unkeyed literals
+	_         [0]func()          //to prevent struct compration
 }

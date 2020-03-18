@@ -14,4 +14,6 @@ type Promotion struct {
 	Charge        float64            `json:"charge" bson:"charge" msgpack:"charge" validate:"required"`
 	CreatedAt     time.Time          `json:"createdAt" bson:"createdAt" msgpack:"createdAt"`
 	UpdatedAt     time.Time          `json:"updatedAt" bson:"updatedAt" msgpack:"updatedAt"`
+	_             struct{}           //to prevent unkeyed literals
+	_             [0]func()          //to prevent struct compration
 }
