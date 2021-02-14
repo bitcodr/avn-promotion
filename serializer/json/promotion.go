@@ -4,7 +4,7 @@ package json
 import (
 	"encoding/json"
 
-	"github.com/amiraliio/avn-promotion/domain/model"
+	"github.com/bitcodr/avn-promotion/domain/model"
 	"github.com/pkg/errors"
 )
 

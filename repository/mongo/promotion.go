@@ -6,9 +6,9 @@ import (
 	"errors"
 	"time"
 
-	"github.com/amiraliio/avn-promotion/config"
-	"github.com/amiraliio/avn-promotion/domain/model"
-	"github.com/amiraliio/avn-promotion/domain/service"
+	"github.com/bitcodr/avn-promotion/config"
+	"github.com/bitcodr/avn-promotion/domain/model"
+	"github.com/bitcodr/avn-promotion/domain/service"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 

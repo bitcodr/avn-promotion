@@ -5,11 +5,11 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/amiraliio/avn-promotion/config"
-	"github.com/amiraliio/avn-promotion/domain/service"
-	"github.com/amiraliio/avn-promotion/helper"
-	"github.com/amiraliio/avn-promotion/serializer/json"
-	"github.com/amiraliio/avn-promotion/serializer/msgpack"
+	"github.com/bitcodr/avn-promotion/config"
+	"github.com/bitcodr/avn-promotion/domain/service"
+	"github.com/bitcodr/avn-promotion/helper"
+	"github.com/bitcodr/avn-promotion/serializer/json"
+	"github.com/bitcodr/avn-promotion/serializer/msgpack"
 	"github.com/gorilla/mux"
 )
 
@@ -38,7 +38,7 @@ func (w *promotionRestHandler) serializer(contentType string) service.PromotionS
 	default:
 		return &json.Promotion{}
 	}
-} 
+}
 
 func (w *promotionRestHandler) Insert(res http.ResponseWriter, req *http.Request) {
 	contentTypeHeader := req.Header.Get("Content-Type")

@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/amiraliio/avn-promotion/config"
+	"github.com/bitcodr/avn-promotion/config"
 	"github.com/pkg/errors"
 	"github.com/vmihailenco/msgpack/v4"
 )

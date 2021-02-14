@@ -3,8 +3,8 @@ package grpc
 import (
 	"context"
 
-	"github.com/amiraliio/avn-grpc-promotion-proto/proto"
-	"github.com/amiraliio/avn-promotion/domain/service"
+	"github.com/bitcodr/avn-grpc-promotion-proto/proto"
+	"github.com/bitcodr/avn-promotion/domain/service"
 )
 
 type PromotionHandler interface {

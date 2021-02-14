@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/amiraliio/avn-promotion/provider"
+	"github.com/bitcodr/avn-promotion/provider"
 )
 
 func main() {
@@ -13,6 +13,7 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
+
 	if err := os.Setenv("PROMOTION_SERVICE_ROOT_DIR", currentDir); err != nil {
 		log.Fatalln(err)
 	}

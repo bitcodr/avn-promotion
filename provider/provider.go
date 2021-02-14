@@ -10,8 +10,8 @@ import (
 	"runtime"
 	"syscall"
 
-	"github.com/amiraliio/avn-promotion/config"
-	"github.com/amiraliio/avn-promotion/handler"
+	"github.com/bitcodr/avn-promotion/config"
+	"github.com/bitcodr/avn-promotion/handler"
 	"github.com/gorilla/mux"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"

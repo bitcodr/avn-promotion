@@ -4,8 +4,8 @@ import (
 	"errors"
 	"time"
 
-	"github.com/amiraliio/avn-promotion/domain/model"
-	"github.com/amiraliio/avn-promotion/helper"
+	"github.com/bitcodr/avn-promotion/domain/model"
+	"github.com/bitcodr/avn-promotion/helper"
 )
 
 var (
@@ -82,8 +82,7 @@ func (p *promotionService) GetByPromotionCode(promotionCode string) (*model.Prom
 	return p.promotionRepo.GetByPromotionCode(promotionCode)
 }
 
-
-func (p *promotionService) InsertReceiver(receiver *model.Receiver) (*model.Receiver, error){
+func (p *promotionService) InsertReceiver(receiver *model.Receiver) (*model.Receiver, error) {
 	if err := helper.ValidateModel(receiver); err != nil {
 		return nil, err
 	}
