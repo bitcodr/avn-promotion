@@ -5,6 +5,8 @@
 - GRPC
 - NATS
 - MONGO
+- DOCKER
+- KUBERNETES
 
 
 
