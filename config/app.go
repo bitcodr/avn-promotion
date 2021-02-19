@@ -15,7 +15,7 @@ type AppInterface interface {
 }
 
 type App struct {
-	CurrentTime                time.Time
+	CurrentTime time.Time
 }
 
 var (

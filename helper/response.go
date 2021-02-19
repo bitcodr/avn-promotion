@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/bitcodr/avn-promotion/config"
 	"github.com/pkg/errors"
 	"github.com/vmihailenco/msgpack/v4"
 )
@@ -95,11 +94,11 @@ func ResponseError(res http.ResponseWriter, err error, httpCode int, contentType
 	}
 	body.Message = detailMessage
 	errorMessage.Details = append(errorMessage.Details, body)
-	if config.AppConfig.GetBool("APP.DEBUG") && err != nil {
-		innerError := new(ErrorTrace)
-		innerError.Trace = err.Error()
-		errorMessage.ErrorTrace = innerError
-	}
+	// if os.Getenv("APP_DEBUG") && err != nil {
+	// 	innerError := new(ErrorTrace)
+	// 	innerError.Trace = err.Error()
+	// 	errorMessage.ErrorTrace = innerError
+	// }
 	response := new(ResponseModel)
 	response.Success = false
 	response.Error = errorMessage

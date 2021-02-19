@@ -4,6 +4,7 @@ package config
 import (
 	"context"
 	"log"
+	"os"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -13,10 +14,10 @@ import (
 //DB config
 func (app *App) DB() *mongo.Database {
 	var config string
-	if AppConfig.GetString("DATABASES.MONGO.USERNAME") != "" && AppConfig.GetString("DATABASES.MONGO.PASSWORD") != "" {
-		config = "mongodb://" + AppConfig.GetString("DATABASES.MONGO.USERNAME") + ":" + AppConfig.GetString("DATABASES.MONGO.PASSWORD") + "@" + AppConfig.GetString("DATABASES.MONGO.HOST") + ":" + AppConfig.GetString("DATABASES.MONGO.PORT") + "/?authSource=" + AppConfig.GetString("DATABASES.MONGO.DATABASE")
+	if os.Getenv("MONGO_DB_USERNAME") != "" && os.Getenv("MONGO_DB_PASSWORD") != "" {
+		config = "mongodb://" + os.Getenv("MONGO_DB_USERNAME") + ":" + os.Getenv("MONGO_DB_PASSWORD") + "@" + os.Getenv("MONGO_DB_HOST") + ":" + "/?authSource=" + os.Getenv("MONGO_DB_NAME")
 	} else {
-		config = "mongodb://" + AppConfig.GetString("DATABASES.MONGO.HOST") + ":" + AppConfig.GetString("DATABASES.MONGO.PORT")
+		config = "mongodb://" + os.Getenv("MONGO_DB_HOST")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -24,5 +25,5 @@ func (app *App) DB() *mongo.Database {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	return client.Database(AppConfig.GetString("DATABASES.MONGO.DATABASE"))
+	return client.Database(os.Getenv("MONGO_DB_NAME"))
 }

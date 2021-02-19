@@ -2,7 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: app-promotion-deployment
-  namespace: promotion
+  namespace: app-promotion
+  labels:
+    app: app-promotion
 spec:
   replicas: 1
   selector:
@@ -23,13 +25,30 @@ spec:
           ports:
             - containerPort: 8081
           env:
-            - name: DB_HOST
+            - name: APP_DEBUG
+              key:
+                valueFrom:
+                  name: app-configmap
+                  key: app_debug
+            - name: APP_PORT
               valueFrom:
-                name: mongo-configmap
+                name: app-configmap
+                key: app_port
+            - name: MONGO_DB_HOST
+              valueFrom:
+                name: app-configmap
                 key: database_url
-            - name: DB_NAME
+            - name: MONGO_DB_NAME
               valueFrom:
-                name: mongo-configmap
+                name: app-configmap
                 key: database_name
-
-
+            - name: MONGO_DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: mongodb_username
+            - name: MONGO_DB_PASSWORD
+              valueFrom:
+                secretRefKey:
+                  name: app-secret
+                  key: mongodb_password

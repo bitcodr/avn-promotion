@@ -1,19 +1,9 @@
-# AVN Promotion
+# Promotion MicroService
 
-
-- Hexagonal Architecture
+- Go
 - GRPC
 - NATS
 - MONGO
 - DOCKER
 - KUBERNETES
-
-
-
-**TODO:**
-
-- Complete unit test
-
-- REDIS As Cache Server
-
-- NATS As Service Discovery
+- Hexagonal Architecture

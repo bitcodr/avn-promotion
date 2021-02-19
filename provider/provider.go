@@ -49,13 +49,13 @@ func httpListener(app *config.App, err chan<- error) {
 
 	router.Use(mux.CORSMethodMiddleware(router))
 
-	fmt.Println("Listening HTTP on port " + config.AppConfig.GetString("APP.HTTP_PORT"))
+	fmt.Println("Listening HTTP on port " + os.Getenv("HTTP_PORT"))
 
-	err <- http.ListenAndServe(":"+config.AppConfig.GetString("APP.HTTP_PORT"), router)
+	err <- http.ListenAndServe(":"+os.Getenv("HTTP_PORT"), router)
 }
 
 func grpcListener(app *config.App, err chan<- error) {
-	listener, er := net.Listen("tcp", ":"+config.AppConfig.GetString("APP.TCP_PORT"))
+	listener, er := net.Listen("tcp", ":"+os.Getenv("GRPC_PORT"))
 	if er != nil {
 		log.Fatal(er)
 	}
@@ -65,7 +65,7 @@ func grpcListener(app *config.App, err chan<- error) {
 
 	reflection.Register(server)
 
-	fmt.Println("Listening TCP on port " + config.AppConfig.GetString("APP.TCP_PORT"))
+	fmt.Println("Listening TCP on port " + os.Getenv("GRPC_PORT"))
 
 	err <- server.Serve(listener)
 }

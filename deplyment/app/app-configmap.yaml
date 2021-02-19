@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-configmap
+  namespace: app-promotion
+data:
+  database_url: db-mongo-service.db-mongo
+  database_name: avn_promotion
+  http_port: "3471"
+  grpc_port: "3571"
+  app_debug: "true"
