@@ -1,0 +1,99 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-configmap
+  namespace: app-promotion
+data:
+  database_url: mongo-service.mongodb
+  database_name: avn_promotion
+  http_port: "3471"
+  grpc_port: "3571"
+  app_debug: "true"
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: app-secret
+  namespace: app-promotion
+type: Opaque
+data:
+  mongodb_username: dXNlcm5hbWU=
+  mongodb_password: cGFzc3dvcmQ=
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-promotion-service
+  namespace: app-promotion
+spec:
+  selector:
+    app: app-promotion
+  ports:
+    - name: http
+      port: 3471
+      targetPort: 3471
+    - name: tcp
+      protocol: TCP
+      port: 3571
+      targetPort: 3571
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-promotion-deployment
+  namespace: app-promotion
+  labels:
+    app: app-promotion
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-promotion
+  template:
+    metadata:
+      labels:
+        app: app-promotion
+    spec:
+      containers:
+        - name: app-promotion
+          image: bitcodr/promotion:latest
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8081
+          env:
+            - name: APP_DEBUG
+              valueFrom:
+                configMapKeyRef:
+                  name: app-configmap
+                  key: app_debug
+            - name: APP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: app-configmap
+                  key: app_port
+            - name: MONGO_DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: app-configmap
+                  key: database_url
+            - name: MONGO_DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: app-configmap
+                  key: database_name
+            - name: MONGO_DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: mongodb_username
+            - name: MONGO_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: mongodb_password

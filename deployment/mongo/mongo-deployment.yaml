@@ -1,23 +1,48 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mongo-secret
+  namespace: mongodb
+type: Opaque
+data:
+  mongo-root-username: dXNlcm5hbWU=
+  mongo-root-password: cGFzc3dvcmQ=
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-service
+  namespace: mongodb
+spec:
+  selector:
+    app: mongodb
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: db-mongo-deployment
-  namespace: db-mongo
+  name: mongo-deployment
+  namespace: mongodb
   labels:
-    app: db-mongo
+    app: mongodb
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: db-mongo
+      app: mongodb
   template:
     metadata:
       labels:
-        app: db-mongo
+        app: mongodb
     spec:
       containers:
-        - name: db- mongo
-          image: db-mongo
+        - name: mongodb
+          image: mongo
           resources:
             limits:
               memory: "128Mi"
@@ -28,10 +53,10 @@ spec:
             - name: MONGO_INITDB_ROOT_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: db-mongo-secret
+                  name: mongo-secret
                   key: mongo-root-username
             - name: MONGO_INITDB_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: db-mongo-secret
+                  name: mongo-secret
                   key: mongo-root-password
